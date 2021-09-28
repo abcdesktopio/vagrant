@@ -1,4 +1,4 @@
-name: vagrant-up
+name: vagrant-docker
 
 on: [push]
 

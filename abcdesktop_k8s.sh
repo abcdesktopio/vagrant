@@ -1,6 +1,6 @@
 
-echo 'load module overlay br_netfilter'
-
+# echo 'load module overlay br_netfilter'
+# 
 # Enable kernel modules
 # sudo modprobe overlay
 # sudo modprobe br_netfilter

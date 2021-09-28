@@ -1,14 +1,12 @@
-_k8s.sh 
 
+echo 'load module overlay br_netfilter'
 
-
-
-echo 'reconfigure system'
 # Enable kernel modules
-sudo modprobe overlay
-sudo modprobe br_netfilter
+# sudo modprobe overlay
+# sudo modprobe br_netfilter
 
 # Add some settings to sysctl
+echo 'enable ip forwarding for routing'
 sudo tee /etc/sysctl.d/kubernetes.conf<<EOF
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
@@ -16,11 +14,11 @@ net.ipv4.ip_forward = 1
 EOF
 
 # Reload sysctl
+echo 'Reload sysctl'
 sudo sysctl --system
 
 
-echo 'reconfigure docker'
-
+echo 'Reconfigure docker change default cgroups to native.cgroupdriver=systemd'
 # Create required directories
 sudo mkdir -p /etc/systemd/system/docker.service.d
 
@@ -71,17 +69,12 @@ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 >> /root/kubeinit.log 2>&1
 
 sudo cat /root/kubeinit.log
 
-#echo 'sleeping for 30s'
-#sleep 30
-
 # Copy Kube admin config
 echo "Copy kube admin config to Vagrant user .kube directory"
 mkdir -p $HOME/.kube
 sudo chown vagrant:root /etc/kubernetes/admin.conf
 # sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 # sudo chown vagrant:vagrant $HOME/.kube/config
-
-
 export KUBECONFIG=/etc/kubernetes/admin.conf
 
 echo 'kubectl config view'
@@ -125,3 +118,12 @@ kubectl -n kube-system wait node/kmaster --for=condition=Ready --timeout=-1s
 # install abcdesktop.io
 export TAG=dev
 curl -sL https://raw.githubusercontent.com/abcdesktopio/conf/main/kubernetes/install.sh | bash
+
+echo start newman runs
+cd conf/postman-collections
+echo 'converting docker postman files to kubernetes localhost -> localhost:30443'
+sudo sed -i "s/localhost/localhost:30443/g" *.json
+# Start postman test
+newman run -n 16 login.anonymous.json -r htmlextra --reporter-htmlextra-export /vagrant
+
+

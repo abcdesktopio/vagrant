@@ -27,7 +27,8 @@ jobs:
 
     - name: Run script to list files
       run: |
-         ls -la 
+         vboxmanage controlvm    kmaster poweroff || true
+         vboxmanage unregistervm kmaster --delete || true
       shell: bash
 
     - name: Run vagrant up

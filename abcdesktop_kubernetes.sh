@@ -120,7 +120,8 @@ export TAG=dev
 curl -sL https://raw.githubusercontent.com/abcdesktopio/conf/main/kubernetes/install.sh | bash
 
 # start all newman test
-echo start newman runs
-newman run -n 16 conf/postman-collections/login.anonymous.json -e conf/postman-collections/environment-kubernetes.json -r htmlextra --reporter-htmlextra-export /vagrant
+echo "start newman run"
+newman run -e conf/postman-collections/environment-kubernetes.json -d conf/postman-collections/ldap_provider_planet_users.json conf/postman-collections/abcdesktoplogin_explicit.postman_collection.json
+# -r htmlextra --reporter-htmlextra-export /vagrant
 
 

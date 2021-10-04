@@ -119,11 +119,8 @@ kubectl -n kube-system wait node/kmaster --for=condition=Ready --timeout=-1s
 export TAG=dev
 curl -sL https://raw.githubusercontent.com/abcdesktopio/conf/main/kubernetes/install.sh | bash
 
+# start all newman test
 echo start newman runs
-cd conf/postman-collections
-echo 'converting docker postman files to kubernetes localhost -> localhost:30443'
-sudo sed -i "s/localhost/localhost:30443/g" *.json
-# Start postman test
-newman run -n 16 login.anonymous.json -r htmlextra --reporter-htmlextra-export /vagrant
+newman run -n 16 conf/postman-collections/login.anonymous.json -e conf/postman-collections/environment-kubernetes.json -r htmlextra --reporter-htmlextra-export /vagrant
 
 

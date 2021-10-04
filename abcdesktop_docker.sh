@@ -8,4 +8,4 @@ sleep 30
 #
 echo start newman runs
 #
-newman run conf/postman-collections/login.anonymous.json
+newman run conf/postman-collections/login.anonymous.json -e conf/postman-collections/environment-docker.json 

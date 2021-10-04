@@ -116,7 +116,7 @@ kubectl -n kube-system wait node/kmaster --for=condition=Ready --timeout=-1s
 #kubectl create -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
 
 # install abcdesktop.io
-export TAG=dev
+# export TAG=dev
 curl -sL https://raw.githubusercontent.com/abcdesktopio/conf/main/kubernetes/install.sh | bash
 
 # start all newman test

@@ -15,7 +15,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 # 
 # install npm
 echo 'install npm'
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt-get update
 # To be able to compile native addons from npm you’ll need to install the development tools
 sudo apt-get install -y git build-essential nodejs

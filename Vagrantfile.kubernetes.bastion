@@ -68,11 +68,16 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", path: "abcdesktop_base.sh"
 
-   # Kubernetes Master Server
+  # Kubernetes Master Server
   config.vm.define "kmaster" do |kmaster|
     kmaster.vm.box = "hashicorp/bionic64"
     kmaster.vm.hostname = "kmaster.example.com"
+    # By default, Vagrant uses a netmask of 255.255.255.0
+    # config.vm.network :hostonly, "10.11.12.13", :netmask => "255.255.0.0"
     kmaster.vm.network "private_network", ip: "172.42.42.100"
+    kmaster.vm.network "private_network", ip: "10.9.1.100", virtualbox__intnet: true
+    kmaster.vm.network "private_network", ip: "192.168.29.100", virtualbox__intnet: true
+    kmaster.vm.network "forwarded_port", guest: 30443, host: 30443
     kmaster.vm.provider "virtualbox" do |v|
       v.name = "kmaster"
       v.memory = 4096

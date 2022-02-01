@@ -135,11 +135,25 @@ kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-c
 echo "waiting for daemonset/kube-multus-ds"
 kubectl rollout status daemonset -n kube-system kube-multus-ds
 
+# create NetworkAttachmentDefinition
+# macvlan-conf-eth2
+kubectl apply -f https://raw.githubusercontent.com/abcdesktopio/conf/main/kubernetes/NetworkAttachmentDefinition.eth2.yaml
+# macvlan-conf-eth2
+kubectl apply -f https://raw.githubusercontent.com/abcdesktopio/conf/main/kubernetes/NetworkAttachmentDefinition.eth3.yaml
+# list NetworkAttachmentDefinition
+kubectl get net-attach-def -n abcdesktop
+
+# define CustomResourceDefinition MultiNetworkPolicy
+kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/multi-networkpolicy/master/scheme.yml
+
 # install multi-networkpolicy-iptables
 kubectl apply -f https://raw.githubusercontent.com/abcdesktopio/multi-networkpolicy-iptables/master/deploy-docker.yml
 echo "waiting for daemonset/multi-networkpolicy-ds-amd64"
 kubectl rollout status daemonset -n kube-system multi-networkpolicy-ds-amd64
 
-# now define rules
+# now define a rule
+kubectl apply -f https://raw.githubusercontent.com/abcdesktopio/conf/main/kubernetes/mnp-permit-shipcrew.yaml
 
+# list rules
+kubectl get multi-policy  -n abcdesktop
 
